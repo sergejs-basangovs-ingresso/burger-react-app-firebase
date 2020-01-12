@@ -1,4 +1,4 @@
-import React from "react";
+import React from "./node_modules/react";
 import Aux from "../../hoc/Aux";
 import classes from "./Layout.module.css";
 

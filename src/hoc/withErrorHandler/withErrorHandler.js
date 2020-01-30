@@ -9,21 +9,42 @@ const withErrorHandler = (WrappedComponent, axios) => {
 			this.state = {
 				error: null
 			};
-		}
-
-		componentDidMount() {
-			axios.interceptors.request.use(req => {
+			//the axios interceptors can be initiated within the constructor
+			//as well as within the componentWillMount - (which is deprecated)
+			this.reqInterceptor = axios.interceptors.request.use(req => {
 				//when I send request I want to clear all error in state
 				this.setState({ error: null });
 				return req;
 			});
-			axios.interceptors.response.use(
+			this.resInterceptor = axios.interceptors.response.use(
 				res => res,
 				error => {
 					// when I receive an error, I set it in state
 					this.setState({ error: error });
 				}
 			);
+		}
+		// we shall remove axios interceptors from CDM - because if any child components will have their http call from within their CDM
+		// and if error will return - this container component will not capture it - as their components will mount before this container's
+		// CDM will mount.
+
+		// componentDidMount() {
+		// 	axios.interceptors.request.use(req => {
+		// 		this.setState({ error: null });
+		// 		return req;
+		// 	});
+		// 	axios.interceptors.response.use(
+		// 		res => res,
+		// 		error => {
+		// 			this.setState({ error: error });
+		// 		}
+		// 	)
+		// }
+
+		componentWillUnmount() {
+			//remove interceptors when container component will unmount
+			axios.interceptors.request.eject(this.reqInterceptor);
+			axios.interceptors.response.eject(this.resInterceptor);
 		}
 
 		errorConfirmedHandler = () => {

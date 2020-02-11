@@ -232,5 +232,59 @@ console.log("bundleItemKeys :", bundleItemKeys);
 
 console.log("\n", "=============================================");
 
-for (const iterator of object) {
-}
+const response = {
+	"-M-kzRNITiEWGpeNSg7z": {
+		customer: {
+			address: {
+				country: "United Kingdom",
+				street: "123 Jump street",
+				zipCode: "WD12 3LK"
+			},
+			email: "test@test.com",
+			name: "Serge Basangovs"
+		},
+		deliveryMethod: "fastest",
+		ingredients: { bacon: 1, cheese: 2, meat: 1, salad: 1 },
+		price: 7.300000000000001
+	},
+	"-M-kzVNAqqT_sY95qmFi": {
+		customer: {
+			address: {
+				country: "United Kingdom",
+				street: "123 Jump street",
+				zipCode: "WD12 3LK"
+			},
+			email: "test@test.com",
+			name: "Serge Basangovs"
+		},
+		deliveryMethod: "fastest",
+		ingredients: { bacon: 3, cheese: 1, meat: 1, salad: 1 },
+		price: 8.3
+	},
+	"-M-kzYyVXtI3tsWfAR5X": {
+		customer: {
+			address: {
+				country: "United Kingdom",
+				street: "123 Jump street",
+				zipCode: "WD12 3LK"
+			},
+			email: "test@test.com",
+			name: "Serge Basangovs"
+		},
+		deliveryMethod: "fastest",
+		ingredients: { bacon: 1, cheese: 1, meat: 1, salad: 1 },
+		price: 6.9
+	}
+};
+
+const convertResponse = response => {
+	const keys = Object.keys(response);
+	const values = Object.values(response);
+	const result = values.reduce((accumulator, current, index) => {
+		const item = { ...current, orderId: keys[index] };
+		return [...accumulator, item];
+	}, []);
+	return result;
+};
+
+console.log(convertResponse(response));

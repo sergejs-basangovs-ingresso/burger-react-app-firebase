@@ -43,8 +43,6 @@ class ContactData extends Component {
 			.catch(error => {
 				this.setState({ loading: false });
 			});
-
-		console.log("Order processing: ", this.props.ingredients);
 	};
 
 	render() {

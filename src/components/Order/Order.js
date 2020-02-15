@@ -25,6 +25,26 @@ const Order = props => {
 			</span>
 		);
 	});
+	const customerData = (
+		<details>
+			<summary>Customer:</summary>
+			<p>
+				<b>Name: </b> {props.customerData.name}
+			</p>
+			<p>
+				<b>Street: </b> {props.customerData.street}
+			</p>
+			<p>
+				<b>Postcode: </b> {props.customerData.zipCode}
+			</p>
+			<p>
+				<b>Country: </b> {props.customerData.country}
+			</p>
+			<p>
+				<b>Delivery method: </b> {props.customerData.deliveryMethod}
+			</p>
+		</details>
+	);
 
 	return (
 		<div className={classes.Order}>
@@ -32,6 +52,7 @@ const Order = props => {
 			<p>
 				Price: <strong>$ {props.price.toFixed(2)}</strong>
 			</p>
+			{customerData}
 		</div>
 	);
 };

@@ -56,6 +56,7 @@ const myData = [
 		view: "browseTitlesGallery"
 	}
 ];
+
 const [one, two, three, four] = myData;
 
 console.log(four);

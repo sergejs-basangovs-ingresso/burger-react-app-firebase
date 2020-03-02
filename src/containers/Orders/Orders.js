@@ -37,6 +37,7 @@ class Orders extends Component {
 		for (const key in response) {
 			result.push({ ...response[key], id: key });
 		}
+
 		return result;
 	};
 

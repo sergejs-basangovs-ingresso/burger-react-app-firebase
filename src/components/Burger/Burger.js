@@ -3,7 +3,7 @@ import BurgerIngredient from "./BurgerIngredient/BurgerIngredient";
 import classes from "./Burger.module.css";
 
 const Burger = props => {
-	const ingNames = Object.keys(props.ingredients).reverse();
+	const ingNames = Object.keys(props.ingredients);
 
 	let transformedIngredients = ingNames
 		.map(name =>

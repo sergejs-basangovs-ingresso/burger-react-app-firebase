@@ -30,6 +30,17 @@ const updateUnmutable = (state = initialState, action) => {
 	}
 };
 
-const newState = updateUnmutable(undefined, action);
+// const newState = updateUnmutable(undefined, action);
 
-console.log("newState", newState);
+// console.log("newState", newState);
+
+const updateObject = (object, newValue) => {
+	return { ...object, ...newValue };
+};
+
+const state = {
+	fname: "John",
+	lname: "Doe"
+};
+
+console.log(updateObject(state, { lname: "Perkins" }));

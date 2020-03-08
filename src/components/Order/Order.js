@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "../UI/Button/Button";
 import classes from "./Order.module.css";
 
 const Order = props => {
@@ -52,6 +53,9 @@ const Order = props => {
 			<p>
 				Price: <strong>$ {props.price.toFixed(2)}</strong>
 			</p>
+			<Button buttonType="Danger" clicked={props.deleteOrder}>
+				Delete Order
+			</Button>
 			{customerData}
 		</div>
 	);

@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import Input from "../../components/UI/Input/Input";
 import Button from "../../components/UI/Button/Button";
+import * as actions from "../../store/actions/auth";
 
 import classes from "./Auth.module.scss";
 
@@ -38,7 +40,9 @@ export class Auth extends Component {
 				valid: false,
 				touched: false
 			}
-		}
+		},
+		formIsValid: false,
+		isSignup: true
 	};
 
 	checkValidity = (value, rules) => {
@@ -64,24 +68,19 @@ export class Auth extends Component {
 		return isValid;
 	};
 
-	inputChangedHandler = (event, inputIdentifier) => {
-		const updatedControls = { ...this.state.controls };
-
-		const updatedControlsElement = {
-			...updatedControls[inputIdentifier]
+	inputChangedHandler = (event, controlName) => {
+		const updatedControls = {
+			...this.state.controls,
+			[controlName]: {
+				...this.state.controls[controlName],
+				value: event.target.value,
+				valid: this.checkValidity(
+					event.target.value,
+					this.state.controls[controlName].validation
+				),
+				touched: true
+			}
 		};
-
-		updatedControlsElement.value = event.target.value;
-
-		updatedControlsElement.valid = this.checkValidity(
-			updatedControlsElement.value,
-			updatedControlsElement.validation
-		);
-
-		updatedControlsElement.touched = true;
-
-		updatedControls[inputIdentifier] = updatedControlsElement;
-
 		let formIsValid = true;
 		for (const key in updatedControls) {
 			formIsValid = updatedControls[key].valid && formIsValid;
@@ -90,6 +89,21 @@ export class Auth extends Component {
 		this.setState({
 			controls: updatedControls,
 			formIsValid
+		});
+	};
+
+	submitHandler = event => {
+		event.preventDefault();
+		this.props.onAuth(
+			this.state.controls.email.value,
+			this.state.controls.password.value,
+			this.state.isSignup
+		);
+	};
+
+	switchAuthModeHandler = () => {
+		this.setState(prevState => {
+			return { isSignup: !prevState.isSignup };
 		});
 	};
 
@@ -120,10 +134,17 @@ export class Auth extends Component {
 
 		return (
 			<div className={classes.Auth}>
-				<form>
+				<form onSubmit={this.submitHandler}>
 					{form}
 					<div>
 						<Button buttonType="Success">SUBMIT</Button>
+						<Button
+							buttonType="Danger"
+							clicked={this.switchAuthModeHandler}
+						>
+							SWITCH TO{" "}
+							{this.state.isSignup ? "SIGN IN" : "SIGN UP"}
+						</Button>
 					</div>
 				</form>
 			</div>
@@ -131,4 +152,11 @@ export class Auth extends Component {
 	}
 }
 
-export default Auth;
+const mapDispatchToProps = dispatch => {
+	return {
+		onAuth: (email, password, isSignup) =>
+			dispatch(actions.auth(email, password, isSignup))
+	};
+};
+
+export default connect(null, mapDispatchToProps)(Auth);

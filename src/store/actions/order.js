@@ -23,11 +23,11 @@ export const purchaseBurgerStart = () => {
 	};
 };
 
-export const purchaseBurger = orderData => {
+export const purchaseBurger = (orderData, token) => {
 	return dispatch => {
 		dispatch(purchaseBurgerStart());
 		axios
-			.post("/orders.json", orderData)
+			.post("/orders.json?auth=" + token, orderData)
 			.then(response => {
 				dispatch(purchaseBurgerSuccess(response.data.name, orderData));
 			})
@@ -63,11 +63,11 @@ export const fetchOrdersFail = error => {
 	};
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = token => {
 	return dispatch => {
 		dispatch(fetchOrdersStart());
 		axios
-			.get("/orders.json")
+			.get("/orders.json?auth=" + token)
 			.then(res => {
 				const orders = utility.convertResponse(res.data);
 				dispatch(fetchOrdersSuccess(orders));
@@ -97,13 +97,13 @@ export const deleteOrderFail = error => {
 	};
 };
 
-export const deleteOrder = id => {
+export const deleteOrder = (id, token) => {
 	return dispatch => {
 		dispatch(deleteOrderStart());
 		axios
-			.delete(`/orders/${id}.json`)
+			.delete(`/orders/${id}.json?auth=${token}`)
 			.then(res => {
-				dispatch(fetchOrders());
+				dispatch(fetchOrders(token));
 			})
 			.catch(error => {
 				dispatch(deleteOrderFail(error));

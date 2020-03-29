@@ -63,11 +63,12 @@ export const fetchOrdersFail = error => {
 	};
 };
 
-export const fetchOrders = token => {
+export const fetchOrders = (token, userId) => {
 	return dispatch => {
 		dispatch(fetchOrdersStart());
+		const queryParams = `?auth=${token}&orderBy="userId"&equalTo="${userId}"`;
 		axios
-			.get("/orders.json?auth=" + token)
+			.get("/orders.json" + queryParams)
 			.then(res => {
 				const orders = utility.convertResponse(res.data);
 				dispatch(fetchOrdersSuccess(orders));
@@ -97,13 +98,13 @@ export const deleteOrderFail = error => {
 	};
 };
 
-export const deleteOrder = (id, token) => {
+export const deleteOrder = (id, token, userId) => {
 	return dispatch => {
 		dispatch(deleteOrderStart());
 		axios
 			.delete(`/orders/${id}.json?auth=${token}`)
 			.then(res => {
-				dispatch(fetchOrders(token));
+				dispatch(fetchOrders(token, userId));
 			})
 			.catch(error => {
 				dispatch(deleteOrderFail(error));

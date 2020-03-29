@@ -1,6 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "../../axiosOrders";
-import * as utility from "../utility";
+import * as utility from "../../shared/utility";
 
 export const purchaseBurgerSuccess = (id, orderData) => {
 	return {
